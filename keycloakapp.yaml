@@ -1,0 +1,35 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: keycloak
+  namespace: argocd
+spec:
+  project: default
+  
+  # Source of your Keycloak configuration
+  source:
+    repoURL: https://github.com/sherifexa/keycloak.git
+    targetRevision: HEAD
+    path: keycloak
+    
+  # Destination cluster and namespace
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: keycloak
+  
+  # Sync policy
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - PrunePropagationPolicy=foreground
+  
+  # Health check
+  health:
+    status: Healthy
+    conditions:
+      - type: Progressing
+        status: "True"
+        reason: "Reconciliation successful"
