@@ -1,0 +1,37 @@
+replicaCount: 2
+
+image:
+  repository: vassio/keycloak-radius-plugin
+  tag: latest-multiarch
+  pullPolicy: IfNotPresent
+
+service:
+  type: LoadBalancer
+  port: 80
+
+ingress:
+  enabled: false
+  annotations: {}
+  hosts:
+    - host: keycloak.sheriftest.shop
+      paths:
+        - path: /
+          pathType: ImplementationSpecific
+
+postgresql:
+  enabled: true
+  auth:
+    username: keycloak
+    password: keycloak123
+    database: keycloakdb
+
+extraEnvVars:
+  - name: KEYCLOAK_ADMIN
+    value: "admin"
+  - name: KEYCLOAK_ADMIN_PASSWORD
+    value: "admin"
+
+persistence:
+  enabled: true
+  size: 10Gi
+
