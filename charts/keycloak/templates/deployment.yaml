@@ -16,6 +16,8 @@ spec:
         - name: keycloak
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
+          args:
+            - "start-dev"  # Required for Keycloak to run properly
           env:
             - name: KEYCLOAK_ADMIN
               valueFrom:
